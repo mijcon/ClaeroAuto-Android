@@ -8,8 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.myclaero.claeroauto.*
+import com.myclaero.claeroauto.R
+import com.myclaero.claeroauto.filterOut
+import com.myclaero.claeroauto.getListOf
+import com.myclaero.claeroauto.upload
 import kotlinx.android.synthetic.main.fragment_veh_add_enter.view.*
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -24,8 +28,9 @@ class EnterYmmFragment : Fragment() {
         var inputMgr: InputMethodManager? = null
 
         private var maxYearApi: Int? = null
-        private var stringMakes: List<String>? = null
-        private var stringModels: List<String>? = null
+        private val stringYears = mutableListOf("Year")
+        private val stringMakes = mutableListOf("Make")
+        private val stringModels = mutableListOf("Model")
 
         private const val MODEL_DB_URL = "https://www.carqueryapi.com/api/0.3/?callback=?&"
         private const val CQ_FAIL = -1
@@ -41,96 +46,37 @@ class EnterYmmFragment : Fragment() {
 
         inputMgr = activity!!.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        when (CarQueryModels().execute("2008").get()) {
-            CQ_SUCCESS_YR -> {
-                val modelYears = mutableListOf<String>()
-                for (year in (Calendar.getInstance().get(Calendar.YEAR) + 1).downTo(OLDEST_MODEL_YEAR)) {
-                    modelYears.add(year.toString())
+        CarQueryModels().execute()
+
+        rootView.spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Lock Spinners?
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position != 0) {
+                    CarQueryModels().execute(rootView.spinnerYear.selectedItem.toString())
                 }
-                rootView.spinnerYear.adapter =
-                        ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, modelYears)
             }
-            CQ_SUCCESS_MK -> {
-                rootView.spinnerMake.adapter =
-                        ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, stringMakes)
+        }
+
+        rootView.spinnerMake.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Lock Spinners?
             }
-            CQ_SUCCESS_ML -> {
-                rootView.spinnerModel.adapter =
-                        ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, stringModels)
-            }
-            else -> {
-                // Throw error
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position != 0) {
+                    CarQueryModels().execute(
+                        rootView.spinnerYear.selectedItem.toString(),
+                        rootView.spinnerMake.selectedItem.toString()
+                    )
+                }
             }
         }
 
         return rootView
     }
-
-    /*
-    private fun proceedVin(v: View) {
-        inputMgr?.hideSoftInputFromWindow(editVin.windowToken, 0)
-
-        buttonConfirm.visibility = Button.INVISIBLE
-        progressProceed.visibility = ProgressBar.VISIBLE
-
-        try {
-            // See if User has an inactive Vehicle that matches
-            val vehList = ParseQuery.getQuery<ParseObject>("Vehicle").apply {
-                whereEqualTo("vin", vehVin)
-                whereEqualTo("owner", ParseUser.getCurrentUser())
-                whereEqualTo("isActive", false)
-            }.find()
-            if (vehList.isNotEmpty()) {
-                vehList[0].put("isActive", true)
-                vehList[0].saveInBackground {
-                    progressProceed.visibility = ProgressBar.GONE
-                    if (it == null) {
-                        activity!!.finish()
-                    } else {
-                        buttonConfirm.visibility = Button.VISIBLE
-                        MainActivity().makeSnack(activity!!, layoutAddVehicle, R.string.parse_error, SNACK_ERROR)
-                        MainActivity().uploadError("AddVehAct", it, "VIN: $vehVin")
-                    }
-                }
-            } else {
-                val data = listOf(
-                    "vin",
-                    "drive_type",
-                    "year",
-                    "trim_level",
-                    "transmission",
-                    "engine",
-                    "model",
-                    "style",
-                    "fuel_type",
-                    "make"
-                )
-                val vehObject = ParseObject("Vehicle").apply {
-                    put("owner", ParseUser.getCurrentUser())
-                    put("nickname", vehNickname!!)
-                    put("json", vehJson!!)
-                    put("isActive", true)
-                    for (datum in data) put(datum, vehSpec!!.get(datum))
-                }
-                vehObject.saveInBackground {
-                    progressProceed.visibility = ProgressBar.GONE
-                    if (it == null) {
-                        activity!!.finish()
-                    } else {
-                        buttonConfirm.visibility = Button.VISIBLE
-                        MainActivity().makeSnack(activity!!, layoutAddVehicle, R.string.parse_error, SNACK_ERROR)
-                        MainActivity().uploadError("AddVehAct-Proceed", it, "VIN: $vehVin")
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            progressProceed.visibility = ProgressBar.GONE
-            buttonConfirm.visibility = Button.VISIBLE
-            MainActivity().uploadError("AddVehAct-Proceed", e, "VIN: $vehVin")
-            MainActivity().makeSnack(activity!!, layoutAddVehicle, R.string.parse_error, SNACK_ERROR)
-        }
-    }
-    */
 
     inner class CarQueryModels : AsyncTask<String?, Unit, Int>() {
 
@@ -193,17 +139,32 @@ class EnterYmmFragment : Fragment() {
                 val resultJson = JSONObject(result)
                 when (params.size) {
                     0 -> {  // Save the highest year and chip out.
-                        maxYearApi = resultJson.getString("max_year").toInt()
+                        maxYearApi = resultJson.getJSONObject("Years").getString("max_year").toInt()
+                        stringYears.apply {
+                            clear()
+                            add("Year")
+                            for (year in (Calendar.getInstance().get(Calendar.YEAR) + 1).downTo(OLDEST_MODEL_YEAR)) {
+                                add(year.toString())
+                            }
+                        }
                         return CQ_SUCCESS_YR
                     }
                     1 -> {  // Remove any uncommon Makes and return
                         val makesArray = resultJson.getJSONArray("Makes")
                         makesArray.filterOut("make_is_common", "0")
-                        stringMakes = makesArray!!.getListOf("make_display")
+                        stringMakes.apply {
+                            clear()
+                            add("Make")
+                            addAll(makesArray!!.getListOf("make_display"))
+                        }
                         return CQ_SUCCESS_MK
                     }
                     2 -> {  // Return Models
-                        stringModels = resultJson.getJSONArray("Models")!!.getListOf("model_name")
+                        stringModels.apply {
+                            clear()
+                            add("Model")
+                            addAll(resultJson.getJSONArray("Models")!!.getListOf("model_name"))
+                        }
                         return CQ_SUCCESS_ML
                     }
                 }
@@ -212,6 +173,34 @@ class EnterYmmFragment : Fragment() {
                 return CQ_FAIL
             }
             return 0
+        }
+
+        override fun onPostExecute(result: Int?) {
+            super.onPostExecute(result)
+
+            val rootView = view!!
+
+            when (result) {
+                CQ_SUCCESS_YR -> {
+                    rootView.spinnerYear.adapter =
+                            ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, stringYears)
+                }
+                CQ_SUCCESS_MK -> {
+                    rootView.spinnerMake.adapter =
+                            ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, stringMakes)
+                }
+                CQ_SUCCESS_ML -> {
+                    rootView.spinnerModel.adapter =
+                            ArrayAdapter<String>(
+                                activity!!,
+                                android.R.layout.simple_spinner_dropdown_item,
+                                stringModels
+                            )
+                }
+                else -> {
+                    // Throw error
+                }
+            }
         }
     }
 }

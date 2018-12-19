@@ -25,7 +25,13 @@ fun Exception.upload(loc: String, note: String? = null) {
             put("owner", ParseUser.getCurrentUser().objectId)
             putOrIgnore("stackTrace", this@upload.stackTrace)
             putOrIgnore("extra", note)
-            putOrIgnore("parseCode", (this@upload as ParseException).message)
+            putOrIgnore(
+                "parseCode", try {
+                    (this@upload as ParseException).message
+                } catch (e: Exception) {
+                    null
+                }
+            )
             saveEventually()
         }
     } catch (e: Exception) {
@@ -38,7 +44,7 @@ fun Exception.upload(loc: String, note: String? = null) {
  */
 fun <T> JSONArray.getListOf(key: String): MutableList<T> {
     val list = mutableListOf<T>()
-    for (i in 0..(this.length()-1)) {
+    for (i in 0..(this.length() - 1)) {
         @Suppress("UNCHECKED_CAST")
         list.add(this.getJSONObject(i).get(key) as T)
     }
@@ -49,9 +55,14 @@ fun <T> JSONArray.getListOf(key: String): MutableList<T> {
  * Eliminates any JSONObjects within the JSONArray that contain the passed key-value pair.
  */
 fun JSONArray.filterOut(key: String, value: Any) {
-    for (i in 0..this.length()) {
+    var end = this.length()
+    var i = 0
+    while (i < end) run {
         if (this.getJSONObject(i).get(key) == value) {
             this.remove(i)
+            end--
+        } else {
+            i++
         }
     }
 }

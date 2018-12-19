@@ -55,14 +55,14 @@
                 android:padding="16dp"/>
         <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/spinnerModel"
-                tools:layout_editor_absoluteX="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerMake" android:padding="16dp"/>
-        <Spinner
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/spinnerMake"
                 tools:layout_editor_absoluteX="0dp"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerYear" android:padding="16dp"/>
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/spinnerModel"
+                tools:layout_editor_absoluteX="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerMake" android:padding="16dp"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
