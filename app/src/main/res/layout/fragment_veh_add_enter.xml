@@ -26,9 +26,8 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
             style="@style/Widget.AppCompat.Button.Borderless" android:textAlignment="center"
-            android:enabled="false"
             android:textColor="@color/colorBlueFaded"
-            android:textColorLink="@color/colorAccent"/>
+            android:enabled="false"/>
 
     <ProgressBar
             style="?android:attr/progressBarStyle"

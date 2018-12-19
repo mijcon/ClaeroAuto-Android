@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,36 +47,72 @@ class EnterYmmFragment : Fragment() {
 
         inputMgr = activity!!.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        CarQueryModels().execute()
+        // Set all three to blank lists.
+        rootView.spinnerYear.apply {
+            adapter = ArrayAdapter(activity!!, android.R.layout.simple_spinner_dropdown_item, listOf("Year"))
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
 
-        rootView.spinnerYear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Lock Spinners?
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position != 0) {
-                    CarQueryModels().execute(rootView.spinnerYear.selectedItem.toString())
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    rootView.spinnerMake.apply {
+                        setSelection(0)
+                        isEnabled = false
+                    }
+                    if (position != 0) CarQueryModels().execute(this@apply.selectedItem.toString())
                 }
             }
         }
+        rootView.spinnerMake.apply {
+            adapter = ArrayAdapter(activity!!, android.R.layout.simple_spinner_dropdown_item, listOf("Make"))
+            isEnabled = false
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
 
-        rootView.spinnerMake.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Lock Spinners?
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position != 0) {
-                    CarQueryModels().execute(
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    rootView.spinnerModel.apply {
+                        setSelection(0)
+                        isEnabled = false
+                    }
+                    if (position != 0) CarQueryModels().execute(
                         rootView.spinnerYear.selectedItem.toString(),
-                        rootView.spinnerMake.selectedItem.toString()
+                        this@apply.selectedItem.toString()
                     )
                 }
             }
         }
+        rootView.spinnerModel.apply {
+            adapter = ArrayAdapter(activity!!, android.R.layout.simple_spinner_dropdown_item, listOf("Model"))
+            isEnabled = false
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    rootView.buttonConfirm.apply {
+                        if (position == 0) {
+                            isEnabled = false
+                            setTextColor(ContextCompat.getColor(activity!!, R.color.colorBlueFaded))
+                        } else {
+                            isEnabled = true
+                            setTextColor(ContextCompat.getColor(activity!!, R.color.colorBlue))
+                        }
+                    }
+                }
+            }
+        }
+
+        rootView.buttonConfirm.setOnClickListener { submitYmm(it) }
+
+        // Initiate the first pull: Years
+        CarQueryModels().execute()
 
         return rootView
+    }
+
+    private fun submitYmm(v: View) {
+        
     }
 
     inner class CarQueryModels : AsyncTask<String?, Unit, Int>() {
@@ -186,16 +223,22 @@ class EnterYmmFragment : Fragment() {
                             ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, stringYears)
                 }
                 CQ_SUCCESS_MK -> {
-                    rootView.spinnerMake.adapter =
-                            ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, stringMakes)
+                    rootView.spinnerMake.apply {
+                        adapter =
+                                ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, stringMakes)
+                        isEnabled = true
+                    }
                 }
                 CQ_SUCCESS_ML -> {
-                    rootView.spinnerModel.adapter =
-                            ArrayAdapter<String>(
-                                activity!!,
-                                android.R.layout.simple_spinner_dropdown_item,
-                                stringModels
-                            )
+                    rootView.spinnerModel.apply {
+                        adapter =
+                                ArrayAdapter<String>(
+                                    activity!!,
+                                    android.R.layout.simple_spinner_dropdown_item,
+                                    stringModels
+                                )
+                        isEnabled = true
+                    }
                 }
                 else -> {
                     // Throw error
