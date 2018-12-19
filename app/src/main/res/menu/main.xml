@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_intro"
+          android:title="@string/action_intro"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_add_veh"
+          android:title="Add Vehicle"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_add_card"
+          android:title="Add Card"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_add_bank"
+          android:title="Add Bank Account"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_schedule"
+          android:title="Schedule Service"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/log_out"
+          android:title="@string/action_log_out"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/delete_acct"
+          android:title="@string/action_delete_acct"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+</menu>

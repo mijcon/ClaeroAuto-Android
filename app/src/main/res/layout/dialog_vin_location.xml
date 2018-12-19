@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+                                              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                                              android:layout_height="match_parent"
+                                              android:orientation="vertical">
+
+    <TextView
+            android:text="Your VIN is usually found in two locations:\n1. Where the windshield meets the hood\n2. Inside the door frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/textSubheader" android:gravity="center_horizontal"
+            android:layout_margin="16dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/vin_locations"
+            android:id="@+id/imageVinLocation" android:layout_gravity="center_horizontal"
+            android:cropToPadding="false" android:adjustViewBounds="true"
+            android:layout_marginStart="32dp" android:layout_marginEnd="32dp"/>
+
+</android.support.v7.widget.LinearLayoutCompat>

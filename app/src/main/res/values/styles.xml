@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="TextAppearance.AppCompat.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="TextAppearance.AppCompat.TextInputLayout.Dark" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="TextAppearance.AppCompat.EditText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:backgroundTint">@color/colorTextPrimary</item>
+    </style>
+    <style name="TextAppearance.AppCompat.EditText.Dark" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:backgroundTint">@color/colorWhite</item>
+    </style>
+    <style name="EditTextTheme" parent="AppTheme.NoActionBar">
+        <item name="colorControlNormal">@color/colorTextPrimary</item>
+        <item name="colorControlActivated">@color/colorTextPrimary</item>
+        <item name="colorControlHighlight">@color/colorTextPrimary</item>
+    </style>
+    <style name="EditTextTheme.Dark" parent="AppTheme.NoActionBar">
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlActivated">#FFFFFF</item>
+        <item name="colorControlHighlight">#FFFFFF</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="DarkActivity">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorHint">@color/colorWhiteFaded</item>
+    </style>
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+</resources>

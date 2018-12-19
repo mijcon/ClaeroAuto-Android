@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5D87C5</color>
+    <color name="colorPrimaryDark">#5D87C5</color>
+    <color name="colorAccent">#1565c0</color>
+
+    <color name="colorTextPrimary">#DF000000</color>
+    <color name="buttonSecondaryLight">#00000000</color>
+
+    <color name="colorChrome">#FFC6C3BE</color>
+    <color name="colorBlue">#FF5D87C5</color>
+    <color name="colorBlueFaded">#615D87C5</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorWhiteFaded">#4DFFFFFF</color>
+
+    <color name="colorSuccess">#43a047</color>
+    <color name="colorError">#b71c1c</color>
+    <color name="colorWarning">#fbc02d</color>
+    <color name="colorTextSuccess">#212121</color>
+    <color name="colorTextError">#bdbdbd</color>
+    <color name="colorTextWarning">#212121</color>
+</resources>

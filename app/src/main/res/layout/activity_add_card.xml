@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layoutPayment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".payments.AddCardActivity">
+
+    <com.stripe.android.view.CardInputWidget
+            android:id="@+id/stripeWidget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minWidth="320dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="16dp"
+            app:cardTint="@color/colorPrimary"
+            app:cardTextErrorColor="@color/colorError" android:paddingEnd="4dp" android:paddingStart="4dp"/>
+
+    <EditText
+            android:id="@+id/editCardName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords|textPersonName"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/stripeWidget"
+            app:layout_constraintStart_toStartOf="@id/stripeWidget"
+            app:layout_constraintEnd_toEndOf="@id/stripeWidget"
+            android:hint="Name as it appears on card"/>
+
+    <TextView
+            android:id="@+id/textCityState"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@id/editZip"
+            app:layout_constraintBottom_toBottomOf="@id/editZip"
+            app:layout_constraintRight_toLeftOf="@id/editZip"
+            app:layout_constraintLeft_toLeftOf="@id/editCardName"
+            android:textSize="18sp"
+            android:gravity="center_vertical|start" android:paddingEnd="12dp" android:paddingStart="12dp"/>
+
+    <EditText
+            android:id="@+id/editZip"
+            android:layout_width="78dp"
+            android:layout_height="wrap_content"
+            android:hint="ZIP"
+            android:maxLength="5"
+            app:layout_constraintTop_toBottomOf="@id/editCardName"
+            app:layout_constraintRight_toRightOf="@id/editCardName"
+            android:textAlignment="center" android:inputType="number"
+            android:selectAllOnFocus="true"/>
+    <Button
+            android:text="Submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonSubmit" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/editZip"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            app:layout_constraintEnd_toEndOf="parent" android:onClick="submitCard" android:layout_marginEnd="16dp"/>
+    <Button
+            android:text="Clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonClear" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/editZip"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:onClick="clearFields"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"/>
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressSubmit"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSubmit"
+            app:layout_constraintStart_toEndOf="@+id/buttonClear"
+            app:layout_constraintTop_toTopOf="@+id/buttonSubmit"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonSubmit" android:indeterminateTint="@color/colorPrimary"
+            android:indeterminate="true" android:visibility="invisible" android:layout_marginEnd="12dp"/>
+
+</android.support.constraint.ConstraintLayout>
