@@ -5,7 +5,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -16,11 +15,9 @@ import com.myclaero.claeroauto.vehicles.AddVehicleDemoActivity
 import com.myclaero.claeroauto.vehicles.VehicleListAdapter
 import com.myclaero.claeroauto.welcome.IntroActivity
 import com.myclaero.claeroauto.welcome.LoginActivity
-import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
-import com.parse.ktx.putOrIgnore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -113,7 +110,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     if (e == null) {
                         startActivity(intentFor<LoginActivity>("login" to true).newTask().clearTask())
                     } else {
-                        uploadError("mainAct-deleteUser", e, "User: ${ParseUser.getCurrentUser().objectId}")
+                        e.upload("mainAct-deleteUser", "User: ${ParseUser.getCurrentUser().objectId}")
                     }
                 }
                 return true
@@ -174,26 +171,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     vehAdapter.notifyDataSetChanged()
                 } else {
                     // Report error
-                    MainActivity().uploadError("MainAct-RefVeh", e, null)
+                    e.upload("MainAct-RefVeh", null)
                 }
                 swipeRefresh.isRefreshing = false
             }
-        }
-    }
-
-    fun uploadError(point: String, e: Exception?, extra: String?) {
-        // If this is a ParseException, let's grab the Code
-        try {
-            ParseObject("Error").apply {
-                put("codeSection", point)
-                put("owner", ParseUser.getCurrentUser().objectId)
-                putOrIgnore("stackTrace", e?.stackTrace)
-                putOrIgnore("extra", extra)
-                putOrIgnore("parseCode", (e as ParseException).message)
-                saveEventually()
-            }
-        } catch (e: Exception) {
-            Log.e("ClaeroParse", "Parse is having some problems. We can't upload any error messages!", e)
         }
     }
 }

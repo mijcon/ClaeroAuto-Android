@@ -177,13 +177,8 @@ class ScanVinFragment : Fragment() {
 						activity!!.finish()
 					} else {
 						rootView.buttonConfirm.visibility = Button.VISIBLE
-						MainActivity().makeSnack(
-							activity!!,
-							rootView.layoutAddVehicle,
-							R.string.parse_error,
-							SNACK_ERROR
-						)
-						MainActivity().uploadError("AddVehAct", it, "VIN: $vehVin")
+						rootView.layoutAddVehicle.makeSnack(R.string.parse_error, SNACK_ERROR)
+						it.upload("AddVehAct", "VIN: $vehVin")
 					}
 				}
 			} else {
