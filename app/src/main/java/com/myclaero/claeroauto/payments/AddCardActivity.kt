@@ -8,10 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
-import com.myclaero.claeroauto.KEY_STRIPE
-import com.myclaero.claeroauto.MainActivity
-import com.myclaero.claeroauto.R
-import com.myclaero.claeroauto.SNACK_WARNING
+import com.myclaero.claeroauto.*
 import com.myclaero.claeroauto.utilities.DecodeZip
 import com.parse.ParseUser
 import com.parse.ktx.putOrIgnore
@@ -156,13 +153,8 @@ class AddCardActivity : AppCompatActivity() {
                             this@AddCardActivity.finish()
                         } else {
                             progressSubmit.visibility = ProgressBar.GONE
-                            MainActivity().uploadError("AddCardAct-SaveTok", e, "Token: ${token?.id}")
-                            MainActivity().makeSnack(
-                                this@AddCardActivity,
-                                layoutPayment,
-                                R.string.token_parse,
-                                SNACK_WARNING
-                            )
+                            e.upload("AddCardAct-SaveTok", "Token: ${token?.id}")
+                            layoutPayment.makeSnack(R.string.token_parse, SNACK_WARNING)
                         }
                     }
                 }
@@ -170,12 +162,7 @@ class AddCardActivity : AppCompatActivity() {
 
             override fun onError(error: java.lang.Exception?) {
                 progressSubmit.visibility = ProgressBar.GONE
-                MainActivity().makeSnack(
-                    this@AddCardActivity,
-                    layoutPayment,
-                    R.string.token_invalid,
-                    SNACK_WARNING
-                )
+                layoutPayment.makeSnack(R.string.token_invalid, SNACK_WARNING)
             }
         })
     }

@@ -41,15 +41,17 @@ import javax.net.ssl.HttpsURLConnection
 
 class ScanVinFragment : Fragment() {
 
-	val regexVin = Regex("[^A-HJ-NPR-Z0-9]")
-	var inputMgr: InputMethodManager? = null
+	companion object {
+		val regexVin = Regex("[^A-HJ-NPR-Z0-9]")
+		var inputMgr: InputMethodManager? = null
 
-	var vehVin: String? = ""
-	val uriTempVin = listOf("vin", ".jpg")
-	var vehNickname: String? = ""
-	var vehJson: JSONObject? = null
-	var vehSpec: JSONObject? = null
-	var vinPhotoUri: Uri? = null
+		var vehVin: String? = ""
+		val uriTempVin = listOf("vin", ".jpg")
+		var vehNickname: String? = ""
+		var vehJson: JSONObject? = null
+		var vehSpec: JSONObject? = null
+		var vinPhotoUri: Uri? = null
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -207,21 +209,16 @@ class ScanVinFragment : Fragment() {
 						activity!!.finish()
 					} else {
 						rootView.buttonConfirm.visibility = Button.VISIBLE
-						MainActivity().makeSnack(
-							activity!!,
-							rootView.layoutAddVehicle,
-							R.string.parse_error,
-							SNACK_ERROR
-						)
-						MainActivity().uploadError("AddVehAct-Proceed", it, "VIN: $vehVin")
+						rootView.layoutAddVehicle.makeSnack(R.string.parse_error, SNACK_ERROR)
+						it.upload("AddVehAct-Proceed", "VIN: $vehVin")
 					}
 				}
 			}
 		} catch (e: Exception) {
 			rootView.progressProceed.visibility = ProgressBar.GONE
 			rootView.buttonConfirm.visibility = Button.VISIBLE
-			MainActivity().uploadError("AddVehAct-Proceed", e, "VIN: $vehVin")
-			MainActivity().makeSnack(activity!!, rootView.layoutAddVehicle, R.string.parse_error, SNACK_ERROR)
+			e.upload("AddVehAct-Proceed", "VIN: $vehVin")
+			rootView.layoutAddVehicle.makeSnack(R.string.parse_error, SNACK_ERROR)
 		}
 	}
 
@@ -247,16 +244,11 @@ class ScanVinFragment : Fragment() {
 					vehVin = vinBarcodes.valueAt(0).rawValue.replace(regexVin, "")
 					rootView.editVin.setText(vehVin)
 				} else {
-					MainActivity().makeSnack(
-						activity!!,
-						rootView.layoutAddVehicle,
-						R.string.scanner_no_vin,
-						SNACK_WARNING
-					)
+					rootView.layoutAddVehicle.makeSnack(R.string.scanner_no_vin, SNACK_WARNING)
 				}
 			} catch (e: Exception) {
-				MainActivity().makeSnack(activity!!, rootView.layoutAddVehicle, R.string.vin_reader_fail, SNACK_ERROR)
-				MainActivity().uploadError("AddVehAct-ScanResult", e, "URI: $vinPhotoUri")
+				rootView.layoutAddVehicle.makeSnack(R.string.vin_reader_fail, SNACK_ERROR)
+				e.upload("AddVehAct-ScanResult", "URI: $vinPhotoUri")
 			}
 		}
 	}
@@ -380,9 +372,7 @@ class ScanVinFragment : Fragment() {
 			} else {
 				rootView.buttonConfirm.isEnabled = false
 				// Build up our SnackBar with the right String and Color Scheme
-				MainActivity().makeSnack(
-					activity!!.applicationContext,
-					rootView.layoutAddVehicle,
+				rootView.layoutAddVehicle.makeSnack(
 					when (result) {
 						DECODE_CONNECT_FAIL -> R.string.decode_vin_error
 						DECODE_INVALID_VIN  -> R.string.decode_invalid_vin
@@ -404,7 +394,7 @@ class ScanVinFragment : Fragment() {
 			)
 			when (result) {
 				DECODE_SERVER_FAIL, DECODE_CONNECT_FAIL ->
-					MainActivity().uploadError("AddVehAct-Decode", exceptionHandle, "VIN: $vehVin")
+					exceptionHandle?.upload("AddVehAct-Decode", "VIN: $vehVin")
 				DECODE_PARSE_FAIL                       ->
 					Log.e("ClaeroParse", "Failed to initialize ParseQuery!", exceptionHandle)
 			}

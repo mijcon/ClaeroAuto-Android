@@ -10,9 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.myclaero.claeroauto.MainActivity
 import com.myclaero.claeroauto.R
 import com.myclaero.claeroauto.getString
+import com.myclaero.claeroauto.upload
 import com.parse.ParseFile
 import com.parse.ParseObject
 import com.parse.ktx.getIntOrNull
@@ -84,7 +84,7 @@ class VehicleListAdapter(context: Context) : RecyclerView.Adapter<VehicleListAda
 					if (thumb != null) BitmapFactory.decodeByteArray(thumb, 0, thumb.size) else null
 				)
 			} catch (e: Exception) {
-				MainActivity().uploadError("VehList-Thumb", e, "Failed to download thumbnail.")
+				e.upload("VehList-Thumb", "Failed to download thumbnail.")
 				thumbnails.add(null)
 			}
 		}
@@ -103,7 +103,7 @@ class VehicleListAdapter(context: Context) : RecyclerView.Adapter<VehicleListAda
 					thumbnails.removeAt(i)
 					this.notifyItemRemoved(i)
 				} catch (e: Exception) {
-					MainActivity().uploadError("EditVeh-Save", e, "VehId: ${vehicle.objectId}")
+					e.upload("EditVeh-Save", "VehId: ${vehicle.objectId}")
 					Toast.makeText(context, "Details couldn't be saved. Sorry about that!", Toast.LENGTH_SHORT).show()
 				}
 			}
@@ -130,7 +130,7 @@ class VehicleListAdapter(context: Context) : RecyclerView.Adapter<VehicleListAda
 					}.save()
 					this.notifyItemChanged(i)
 				} catch (e: Exception) {
-					MainActivity().uploadError("EditVeh-Save", e, "VehId: ${vehicle.objectId}")
+					e.upload("EditVeh-Save", "VehId: ${vehicle.objectId}")
 					Toast.makeText(context, "Details couldn't be saved. Sorry about that!", Toast.LENGTH_SHORT).show()
 				}
 			}

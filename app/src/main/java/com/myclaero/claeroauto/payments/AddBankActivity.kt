@@ -9,16 +9,13 @@ import android.util.Log
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.myclaero.claeroauto.MainActivity
 import com.myclaero.claeroauto.R
 import com.myclaero.claeroauto.SNACK_WARNING
+import com.myclaero.claeroauto.makeSnack
+import com.myclaero.claeroauto.upload
 import com.parse.ParseUser
 import com.parse.ktx.putOrIgnore
-import com.plaid.client.PlaidClient
-import com.plaid.client.request.ItemPublicTokenExchangeRequest
-import com.plaid.client.request.ItemStripeTokenCreateRequest
 import kotlinx.android.synthetic.main.activity_add_bank.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import org.json.JSONObject
 import java.util.*
 
@@ -81,10 +78,10 @@ class AddBankActivity : AppCompatActivity() {
                                 putOrIgnore("achObject", JSONObject(linkData))
                                 saveInBackground { e ->
                                     if (e == null) {
-                                        MainActivity().makeSnack(this@AddBankActivity, plaidLayout, R.string.bank_linked)
+                                        plaidLayout.makeSnack(R.string.bank_linked)
                                     } else {
-                                        MainActivity().uploadError("AddPlaid-SaveToken", e, "Institution: ${linkData["institution_name"]}")
-                                        MainActivity().makeSnack(this@AddBankActivity, plaidLayout, R.string.bank_failed, SNACK_WARNING)
+                                        e.upload("AddPlaid-SaveToken", "Institution: ${linkData["institution_name"]}")
+                                        plaidLayout.makeSnack(R.string.bank_failed, SNACK_WARNING)
                                     }
                                 }
                             }
