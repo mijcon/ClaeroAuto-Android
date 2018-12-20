@@ -149,8 +149,8 @@ class ScanVinFragment : Fragment() {
 				camIntent.putExtra(MediaStore.EXTRA_OUTPUT, vinPhotoUri)
 				startActivityForResult(camIntent, AR_CODE_ADD_VEH_CAM)
 			} catch (e: Exception) {
-				MainActivity().makeSnack(activity!!, rootView.layoutAddVehicle, R.string.cam_fail_error, SNACK_ERROR)
-				MainActivity().uploadError("ScanVin-TempDir", e, null)
+				rootView.layoutAddVehicle.makeSnack(R.string.cam_fail_error, SNACK_ERROR)
+				e.upload("ScanVin-TempDir", null)
 			}
 		}
 	}

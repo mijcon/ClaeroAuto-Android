@@ -1,17 +1,13 @@
 package com.myclaero.claeroauto
 
-import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import com.myclaero.claeroauto.payments.AddBankActivity
 import com.myclaero.claeroauto.payments.AddCardActivity
@@ -107,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Toast.makeText(applicationContext, "Successfully logged out!", Toast.LENGTH_SHORT).show()
                         startActivity(intentFor<LoginActivity>("login" to true).newTask().clearTask())
                     } else {
-                        makeSnack(applicationContext, drawer_layout, R.string.logout_error, SNACK_ERROR)
+                        drawer_layout.makeSnack(R.string.logout_error, SNACK_ERROR)
                     }
                 }
                 return true
@@ -198,32 +194,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         } catch (e: Exception) {
             Log.e("ClaeroParse", "Parse is having some problems. We can't upload any error messages!", e)
-        }
-    }
-
-    fun makeSnack(context: Context, view: View, msg: Int, error_type: Int? = null) {
-        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).apply {
-            setActionTextColor(
-                ContextCompat.getColor(
-                    context,
-                    when (error_type) {
-                        SNACK_WARNING -> R.color.colorTextWarning
-                        SNACK_ERROR -> R.color.colorTextError
-                        else -> R.color.colorTextSuccess
-                    }
-                )
-            )
-            this.view.setBackgroundColor(
-                ContextCompat.getColor(
-                    context,
-                    when (error_type) {
-                        SNACK_WARNING -> R.color.colorWarning
-                        SNACK_ERROR -> R.color.colorError
-                        else -> R.color.colorSuccess
-                    }
-                )
-            )
-            show()
         }
     }
 }

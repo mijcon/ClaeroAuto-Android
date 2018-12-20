@@ -1,6 +1,9 @@
 package com.myclaero.claeroauto
 
+import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.view.ViewGroup
 import android.widget.EditText
 import com.parse.ParseException
 import com.parse.ParseObject
@@ -65,4 +68,27 @@ fun JSONArray.filterOut(key: String, value: Any) {
             i++
         }
     }
+}
+
+fun ViewGroup.makeSnack(msg: String, error_type: Int? = null) {
+    var textColor: Int = R.color.colorTextSuccess
+    var backgroundColor: Int = R.color.colorSuccess
+
+    if (error_type == SNACK_WARNING) {
+        textColor = R.color.colorTextWarning
+        backgroundColor = R.color.colorWarning
+    } else if (error_type == SNACK_ERROR) {
+        textColor = R.color.colorTextError
+        backgroundColor = R.color.colorError
+    }
+
+    Snackbar.make(this, msg, Snackbar.LENGTH_LONG).apply {
+        setActionTextColor(ContextCompat.getColor(context, textColor))
+        this.view.setBackgroundColor(ContextCompat.getColor(context, backgroundColor))
+        show()
+    }
+}
+
+fun ViewGroup.makeSnack(msg: Int, error_type: Int? = null) {
+    this.makeSnack(resources.getString(msg), error_type)
 }

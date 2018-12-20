@@ -59,32 +59,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:hint="Last Name" android:inputType="textPersonName"
-        />
+                android:hint="Last Name"
+                android:inputType="textPersonName"/>
 
     </android.support.design.widget.TextInputLayout>
 
-    <EditText
-            android:id="@+id/editZip"
+    <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputLayoutPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.TextInputLayout.Dark"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorWhite"
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutNameLast" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp">
+
+        <android.support.design.widget.TextInputEditText
+                android:id="@+id/editPhone"
+                style="@style/TextAppearance.AppCompat.EditText.Dark"
+                android:theme="@style/EditTextTheme.Dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:hint="Phone Number"
+                android:inputType="phone"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputLayoutZip"
             android:layout_width="78dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/inputLayoutNameLast"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.TextInputLayout.Dark"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorWhite"
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutPhone"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="64dp">
+
+    <android.support.design.widget.TextInputEditText
+            android:id="@+id/editZip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.EditText.Dark"
-            android:textColorHint="@color/colorWhiteFaded"
             android:theme="@style/EditTextTheme.Dark"
             android:textSize="18sp"
-            android:hint="ZIP" tools:ignore="Autofill" android:inputType="number"
-            android:maxLength="5"
-            android:gravity="center_horizontal"
-            app:layout_constraintStart_toStartOf="@+id/inputLayoutNameLast"/>
+            android:hint="ZIP"
+            android:inputType="number"
+            android:maxLength="5"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/textCityState"
-            app:layout_constraintStart_toEndOf="@+id/editZip"
-            app:layout_constraintTop_toTopOf="@+id/editZip" app:layout_constraintBottom_toBottomOf="@+id/editZip"
+            app:layout_constraintStart_toEndOf="@id/inputLayoutZip"
+            app:layout_constraintTop_toTopOf="@id/inputLayoutZip"
+            app:layout_constraintBottom_toBottomOf="@id/inputLayoutZip"
             app:layout_constraintEnd_toEndOf="@+id/inputLayoutNameLast"
             android:gravity="end"/>
+
     <Button
             android:id="@+id/buttonSubmit"
             style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
@@ -95,8 +130,11 @@
             android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:textSize="16sp" android:text="Confirm" app:layout_constraintTop_toBottomOf="@+id/editZip"
+            android:textSize="16sp"
+            android:text="Confirm"
+            app:layout_constraintTop_toBottomOf="@id/inputLayoutZip"
             android:layout_marginTop="32dp"/>
+
     <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
