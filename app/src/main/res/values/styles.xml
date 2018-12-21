@@ -51,4 +51,11 @@
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="AppTheme.Buttons.Light" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/button_dynamic_light</item>
+    </style>
+    <style name="AppTheme.Buttons.Dark" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/button_dynamic_dark</item>
+    </style>
+
 </resources>

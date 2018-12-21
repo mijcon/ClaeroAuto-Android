@@ -115,7 +115,7 @@
 
         <Button
                 android:id="@+id/buttonLogin"
-                style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+                style="@style/AppTheme.Buttons.Dark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"

@@ -54,11 +54,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/textTitle"
             android:textAlignment="center"
-            android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="@+id/progressVin"
-            app:layout_constraintBottom_toBottomOf="@+id/progressVin"
-            app:layout_constraintStart_toStartOf="@+id/progressVin"
-            app:layout_constraintEnd_toEndOf="@+id/progressVin"/>
+            app:layout_constraintTop_toBottomOf="@id/editVin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="32dp"/>
 
     <Button
             android:text="Confirm"
@@ -68,22 +67,21 @@
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="64dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            style="@style/Widget.AppCompat.Button.Borderless" android:textAlignment="center"
-            android:enabled="false"
-            android:textColor="@color/colorBlueFaded"
-            android:textColorLink="@color/colorAccent"/>
+            style="@style/AppTheme.Buttons.Light" android:textAlignment="center"
+            android:enabled="false"/>
 
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progressVin"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/textTitle"
+            app:layout_constraintTop_toTopOf="@id/textTitle"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:indeterminate="true"
-            android:indeterminateTint="@color/colorPrimary" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/editVin"/>
+            android:indeterminateTint="@color/colorPrimary"/>
 
     <ProgressBar
             style="?android:attr/progressBarStyle"

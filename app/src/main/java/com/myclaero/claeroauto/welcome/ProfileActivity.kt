@@ -93,9 +93,8 @@ class ProfileActivity : AppCompatActivity() {
             if (e == null) {
                 startActivity(intentFor<VerifyActivity>().newTask().clearTask())
             } else {
-                MainActivity().uploadError(
+                e.upload(
                     "ProfAct-Save",
-                    e,
                     "First: ${editNameFirst.getString()}, " +
                             "Last: ${editNameLast.getString()}, " +
                             "Zip: ${editZip.getString()}"

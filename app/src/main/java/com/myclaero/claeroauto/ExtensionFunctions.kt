@@ -10,6 +10,7 @@ import com.parse.ParseObject
 import com.parse.ParseUser
 import com.parse.ktx.putOrIgnore
 import org.json.JSONArray
+import javax.net.ssl.HttpsURLConnection
 
 /**
  * Shorthand handling of EditText Strings.
@@ -91,4 +92,16 @@ fun ViewGroup.makeSnack(msg: String, error_type: Int? = null) {
 
 fun ViewGroup.makeSnack(msg: Int, error_type: Int? = null) {
     this.makeSnack(resources.getString(msg), error_type)
+}
+
+fun HttpsURLConnection.readAll(): String {
+    val reader = java.io.BufferedReader(java.io.InputStreamReader(this.inputStream, "UTF-8"))
+    var line = reader.readLine()
+    var result = ""
+    while (line != null) {
+        result += line
+        line = reader.readLine()
+    }
+    reader.close()
+    return result
 }

@@ -2,13 +2,15 @@ package com.myclaero.claeroauto.welcome
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.TextView
 import com.myclaero.claeroauto.*
 import com.myclaero.claeroauto.utilities.PostTextWatcher
 import com.parse.ParseACL
@@ -158,18 +160,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun logIn(v: View) {
         // If Login Button was clicked, we'll attempt to log in on a separate thread
-        ParseUser.logInInBackground(
-            editEmail.getString(),
-            editPass.getString()
-        ) { user, e ->
+        ParseUser.logInInBackground(editEmail.getString(),editPass.getString()) { user, e ->
             if (e == null) {
                 // No errors
-                Toast.makeText(
-                    this@LoginActivity,
-                    String.format(getString(R.string.welcome_back), user.getString("givenName")),
-                    Toast.LENGTH_LONG
-                ).show()
-                this@LoginActivity.defaultSharedPreferences.edit().putBoolean("logged_in_prev", true).apply()
+                longToast(String.format(getString(R.string.welcome_back), user.getString("givenName")))
+                defaultSharedPreferences.edit().putBoolean("logged_in_prev", true).apply()
                 startActivity(intentFor<MainActivity>().newTask().clearTask())
             } else {
                 when (e.code) {
@@ -179,8 +174,10 @@ class LoginActivity : AppCompatActivity() {
                     ParseException.MUST_CREATE_USER_THROUGH_SIGNUP,
                     ParseException.OBJECT_NOT_FOUND ->
                         layoutLogin.makeSnack(R.string.login_invalid, SNACK_WARNING)
-                    else ->
+                    else -> {
+                        e.upload("LogInAct-LogIn", "Email: ${editEmail.getString()}")
                         layoutLogin.makeSnack(R.string.login_error, SNACK_ERROR)
+                    }
                 }
             }
             lockChanges(false)
@@ -198,6 +195,7 @@ class LoginActivity : AppCompatActivity() {
                     if (e == null || e.code == ParseException.EMAIL_NOT_FOUND) {
                         layoutLogin.makeSnack(R.string.password_reset)
                     } else {
+                        e.upload("LogInAct-ForgotPass", "Email: ${editEmail.getString()}")
                         layoutLogin.makeSnack(R.string.password_reset_fail, SNACK_WARNING)
                     }
                 }
@@ -248,11 +246,5 @@ class LoginActivity : AppCompatActivity() {
     fun checkFields() {
         buttonLogin.isEnabled = isValidEmail && isValidPass &&
                 if (!isLogin) editConf.text!!.length == editPass.text!!.length else true
-        buttonLogin.setTextColor(
-            ContextCompat.getColor(
-                this,
-                if (buttonLogin.isEnabled) R.color.colorWhite else R.color.colorWhiteFaded
-            )
-        )
     }
 }

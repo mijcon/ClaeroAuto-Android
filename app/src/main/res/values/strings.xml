@@ -21,7 +21,7 @@
     <string name="parse_error">Something went wrong and our team has been notified.</string>
 
     <!-- Strings related to AddVehicle -->
-    <string name="decode_vin_error">Check your internet connection.</string>
+    <string name="decode_vin_error">Something went wrong, check your internet connection.</string>
     <string name="decode_has_vin">It looks like you\'ve already registered this vehicle.</string>
     <string name="decode_invalid_vin">It looks like this VIN is invalid.</string>
     <string name="scanner_no_vin">The scanner couldn\'t find a VIN. Please try again.</string>
